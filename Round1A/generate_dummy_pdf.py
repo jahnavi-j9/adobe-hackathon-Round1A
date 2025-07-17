@@ -2,7 +2,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 import os
 
-def generate_dummy_pdf(filename="app/input/test40.pdf", pages=40):
+def generate_dummy_pdf(filename="app/input/sample.pdf", pages=12):
     os.makedirs("app/input", exist_ok=True)
     c = canvas.Canvas(filename, pagesize=A4)
     for i in range(1, pages + 1):
