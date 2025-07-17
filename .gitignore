@@ -22,3 +22,5 @@ Round1B/app/output/
 
 # macOS system file
 .DS_Store
+
+venv/
