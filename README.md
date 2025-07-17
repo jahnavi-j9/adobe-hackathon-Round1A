@@ -27,17 +27,19 @@ Automatically extract the **Title**, and **H1 / H2 / H3 headings** with their co
 ```
 Round1A/
 ├── app/
-│   ├── input/       # Input PDFs placed here (mounted in Docker)
-│   └── output/      # JSON outputs saved here
+│   ├── input/                   # Input PDFs placed here (Docker-mounted)
+│   └── output/                  # Output JSONs written here (Docker-mounted)
 ├── src/
-│   ├── main.py
-│   ├── extractor.py
-│   ├── utils.py
-│   └── config.py
-├── requirements.txt
-├── Dockerfile       # (Coming Soon)
-├── sample.pdf       # (Optional)
-└── sample.json      # (Optional)
+│   ├── main.py                  # Entrypoint for processing all PDFs
+│   ├── extractor.py             # Extracts title, H1, H2, H3 using font sizes
+│   ├── utils.py                 # Helpers for reading PDF, writing JSON
+│   └── config.py                # (Optional) Thresholds/configs for heading detection
+├── requirements.txt             # pdfplumber + PyMuPDF
+├── Dockerfile                   # CPU-only, offline, AMD64-compliant
+├── generate_dummy_pdf.py        # (Optional) Generate test PDFs with headings
+├── sample.pdf                   # (Optional) A test input PDF
+└── sample.json                  # (Optional) Expected output for sample.pdf
+
 ```
 
 
