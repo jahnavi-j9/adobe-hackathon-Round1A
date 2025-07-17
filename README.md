@@ -57,24 +57,43 @@ pip install -r requirements.txt
 
 
 
+
 ## ⚙️ How It Works
 
-1. Place your `.pdf` files into the `app/input/` folder.
-2. Run `main.py`, which will:
+1. **Place** `.pdf` files into the `app/input/` directory.
 
-   * Open each PDF
-   * Use font-size-based heuristics to identify headings
-   * Save JSON results in `app/output/`
-3. Output matches the hackathon’s required format.
+2. **Run the program**:
+
+   ```bash
+   python src/main.py
+   ```
+
+3. The script will:
+
+   * ✅ Open each PDF file
+   * ✅ Extract the **title** and **headings (H1, H2, H3)** using font-size heuristics
+   * ✅ Generate a `.json` file with structured output
+   * ✅ Save the output to the `app/output/` folder with the same filename as the input PDF
+
+4. The solution is:
+
+   * ⚙️ Fully **offline**
+   * 💻 **CPU-only**
+   * 📁 Compatible with Adobe’s expected input/output schema
+   * 🚀 Modular and reusable for Round 1B and Round 2
 
 
 
-## 🚀 Next Steps
+## 🚀 Progress Tracker
 
-* [ ] Add Dockerfile for AMD64 CPU-based offline execution
+* [x] Folder structure
+* [x] Heading extraction logic
+* [x] JSON output format
+* [x] GitHub commit history setup
+* [ ] Dockerfile for AMD64 CPU-based offline execution
 * [ ] Performance tuning and multilingual handling
-* [ ] Integration into Round 2 web app
-
+* [ ] Final sample testing and benchmarking
+* [ ] Round 2 integration
 
 
 
