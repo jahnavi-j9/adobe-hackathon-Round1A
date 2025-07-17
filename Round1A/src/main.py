@@ -24,6 +24,14 @@ def process_all_pdfs():
             print(f"Processing: {filename}")
 
             try:
+                # Page count validation
+                import pdfplumber
+                with pdfplumber.open(filepath) as pdf:
+                    if len(pdf.pages) > 50:
+                        print(f"Skipped: {filename} has more than 50 pages")
+                        continue
+
+                # Run extraction
                 output = extract_outline(filepath)
                 output_filename = os.path.splitext(filename)[0] + ".json"
                 output_path = os.path.join(OUTPUT_DIR, output_filename)
