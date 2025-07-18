@@ -1,44 +1,40 @@
 import os
+import fitz  # PyMuPDF
 import json
-from extractor import extract_outline
-from utils import write_json
+from src.extractor import extract_outline
 
-# Auto-switch between local and Docker environment
-RUNNING_LOCALLY = os.environ.get("ENV", "local") == "local"
+INPUT_DIR = "app/input"
+OUTPUT_DIR = "app/output"
 
-if RUNNING_LOCALLY:
-    INPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "app", "input")
-    OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "app", "output")
-else:
-    INPUT_DIR = "/app/input"
-    OUTPUT_DIR = "/app/output"
+def process_pdf(file_path):
+    try:
+        doc = fitz.open(file_path)
+        return doc
+    except Exception as e:
+        print(f"Failed to open PDF: {file_path}\nError: {e}")
+        return None
 
-def process_all_pdfs():
-    if not os.path.exists(INPUT_DIR):
-        print(f"Input directory not found: {INPUT_DIR}")
-        return
+def save_json(data, path):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
-    for filename in os.listdir(INPUT_DIR):
-        if filename.lower().endswith(".pdf"):
-            filepath = os.path.join(INPUT_DIR, filename)
-            print(f"Processing: {filename}")
+def process_all():
+    files = [f for f in os.listdir(INPUT_DIR) if f.lower().endswith(".pdf")]
 
-            try:
-                # Page count validation
-                import pdfplumber
-                with pdfplumber.open(filepath) as pdf:
-                    if len(pdf.pages) > 50:
-                        print(f"Skipped: {filename} has more than 50 pages")
-                        continue
+    for f in files:
+        pdf_path = os.path.join(INPUT_DIR, f)
+        doc = process_pdf(pdf_path)
+        if not doc:
+            continue
 
-                # Run extraction
-                output = extract_outline(filepath)
-                output_filename = os.path.splitext(filename)[0] + ".json"
-                output_path = os.path.join(OUTPUT_DIR, output_filename)
-                write_json(output, output_path)
-                print(f"Saved: {output_filename}")
-            except Exception as e:
-                print(f"Error processing {filename}: {e}")
+        result = extract_outline(doc)
+        doc.close()
+
+        output_filename = os.path.splitext(f)[0] + ".json"
+        output_path = os.path.join(OUTPUT_DIR, output_filename)
+        save_json(result, output_path)
+
+        print(f"Processed {f} → {output_filename}")
 
 if __name__ == "__main__":
-    process_all_pdfs()
+    process_all()
